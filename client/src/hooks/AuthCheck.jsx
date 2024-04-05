@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { API_URL } from "../../API";
+import { API_URL,PROD_URL } from "../../API";
 import { useNavigate } from "react-router-dom";
 
 export default function useIsAuth({ path }) {
@@ -8,7 +8,7 @@ export default function useIsAuth({ path }) {
     const navigate = useNavigate();
     useEffect(() => {
         const isAuth = () => {
-            axios.get(`${API_URL}/api/user/authChecker`, { withCredentials: true }).then((res) => {
+            axios.get(`${PROD_URL}/api/user/authChecker`, { withCredentials: true }).then((res) => {
                 if (res.status === 200) {
                     setAuth(true);
                     if(path) {
