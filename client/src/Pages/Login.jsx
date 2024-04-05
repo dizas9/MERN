@@ -21,7 +21,7 @@ export default function Login() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    axios.post(`${API_URL}/api/user/login`, JSON.stringify(formData), {
+    axios.post(`${PROD_URL}/api/user/login`, JSON.stringify(formData), {
       headers: { "Content-Type": "application/json" },
       withCredentials: true,
     }).then((res) => {
