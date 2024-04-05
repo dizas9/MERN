@@ -60,7 +60,7 @@ export default function Login() {
       >
         <h2>Log In</h2>
         {errMsg ? <p>{errMsg}</p> : ""}
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">Email1</label>
         <input
           type="text"
           name="email"
