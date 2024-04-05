@@ -1,6 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const session = require("express-session")
+const MongoDBStore = require("connect-mongodb-session")(session);
+
 
 //middlewire
 const app = express();
@@ -14,7 +17,7 @@ app.use(
       "http://localhost:5000",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    // allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
@@ -30,6 +33,25 @@ mongoose
   .then(() => console.log("Database Connected"))
   .catch((err) => console.log(err));
 
+
+//set session store
+const store = new MongoDBStore({
+  uri: URI,
+  databaseName: "test",
+  collection: "mySession",
+});
+
+app.use(session({
+  key: "session",
+  secret: "Hello@34",
+  resave: false,
+  saveUninitialized: false,
+  store: store,
+  cookie: {
+    maxAge: 60 * 60 * 60 * 10,
+    secure:false,
+  }
+}));
 
 
 //routes defination
