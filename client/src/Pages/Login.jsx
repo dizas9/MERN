@@ -29,7 +29,7 @@ export default function Login() {
 
       const body = JSON.stringify(formData);
 
-      const res = await axios.post(`${PROD_URL}/api/user/login`, body, config);
+      const res = await axios.post(`${API_URL}/api/user/login`, body, config);
 
       if (res.status === 200) {
         navigate("/dashboard");
@@ -60,7 +60,7 @@ export default function Login() {
       >
         <h2>Log In</h2>
         {errMsg ? <p>{errMsg}</p> : ""}
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">Email1</label>
         <input
           type="text"
           name="email"
