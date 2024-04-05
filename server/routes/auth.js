@@ -28,11 +28,8 @@ router.post("/register", async (req, res) => {
 
     await user.save();
 
-    // jwt token
+    // set session
 
-    const payload = {
-      user: { id: user.id },
-    };
 
     jwt.sign(payload, "jwtSecret", { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;
@@ -65,21 +62,31 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Wrong Password" });
     }
 
-    // Generate JWT token
+    // Generate sessionID
+    req.session.email = user.email;
+    console.log("login hit", req.session.email);
 
-    const payload = {
-      user: { id: user.id },
-    };
+    return res.status(200).json({ message: "Login Successfull" });
 
-    jwt.sign(payload, "jwtSecret", { expiresIn: 3600 }, (err, token) => {
-      if (err) throw err;
-
-      return res.json(token);
-    });
   } catch (error) {
     console.error(error.message);
     return res.status(500).send("Server Error");
   }
 });
+
+
+//AuthChecker Route
+router.get("/authChecker", async (req, res) => {
+  try {
+    if (req.session.email) {
+      return res.status(200).json({ valid: true, msg: "Already Logged" });
+    } else {
+      return res.status(401).json({ valid: false, msg: "UnAuthorized" });
+    }
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).send("Server Error");
+  }
+})
 
 module.exports = router;

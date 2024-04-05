@@ -1,9 +1,18 @@
-import React from "react";
+// import { useNavigate } from "react-router-dom";
+import useIsAuth from "../hooks/AuthCheck";
+
+
 
 export default function Home() {
+  const { auth } = useIsAuth(" ");
+
+  // const navigate = useNavigate();
+
   return (
-    <div>
-      <h1>Hello DashBoard</h1>
-    </div>
+    <>
+      {auth && <div>
+        <h1>Hello DashBoard</h1>
+      </div>}
+    </>
   );
 }
