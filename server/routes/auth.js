@@ -2,14 +2,27 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const multer = require("multer");
 const User = require("../models/User");
 
-// register routes
-router.post("/register", async (req, res) => {
-  // destruture request body
+//multer file upload middleware
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "Upload");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
 
+const upload = multer({ storage: storage });
+
+// register routes
+router.post("/register", upload.single("image"), async (req, res) => {
+  // destruture request body
   const { firstname, lastname, email, password } = req.body;
+  const image = req.file ? req.file.path : null;
+  console.log(image);
 
   try {
     let user = await User.findOne({ email });
@@ -18,7 +31,7 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "User Already Exists" });
     }
 
-    user = new User({ firstname, lastname, email, password });
+    user = new User({ firstname, lastname, email, password, image });
 
     // encrypt the password
 
@@ -28,14 +41,7 @@ router.post("/register", async (req, res) => {
 
     await user.save();
 
-    // set session
-
-
-    jwt.sign(payload, "jwtSecret", { expiresIn: 3600 }, (err, token) => {
-      if (err) throw err;
-
-      return res.json(token);
-    });
+    return res.status(200).json({ message: "Registration successful" });
   } catch (error) {
     return res.status(500).send("server error");
   }
@@ -67,13 +73,11 @@ router.post("/login", async (req, res) => {
     console.log("login hit", req.session.email);
 
     return res.status(200).json({ message: "Login Successfull" });
-
   } catch (error) {
     console.error(error.message);
     return res.status(500).send("Server Error");
   }
 });
-
 
 //AuthChecker Route
 router.get("/authChecker", async (req, res) => {
@@ -87,6 +91,6 @@ router.get("/authChecker", async (req, res) => {
     console.error(error.message);
     return res.status(500).send("Server Error");
   }
-})
+});
 
 module.exports = router;
