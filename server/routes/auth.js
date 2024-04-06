@@ -27,7 +27,6 @@ router.post("/register", upload.single("image"), async (req, res) => {
   // destruture request body
   const { firstname, lastname, email, password } = req.body;
   const image = req.file ? req.file.buffer.toString("base64") : null;
-  console.log(image);
 
   try {
     let user = await User.findOne({ email });
