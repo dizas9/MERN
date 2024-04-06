@@ -41,7 +41,7 @@ export default function Login() {
             display: "flex",
             flexDirection: "column",
             alignItems: "start",
-            gap: "0.6rem",
+            gap: "0.5rem",
           }}
           onSubmit={handleSubmit}
         >
