@@ -1,12 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const session = require("express-session")
+const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-
 
 //middlewire
 const app = express();
+app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(
   cors({
@@ -22,7 +22,6 @@ app.use(
   })
 );
 
-
 const port = 5000;
 
 // Database configuration
@@ -33,7 +32,6 @@ mongoose
   .then(() => console.log("Database Connected"))
   .catch((err) => console.log(err));
 
-
 //set session store
 const store = new MongoDBStore({
   uri: URI,
@@ -41,18 +39,21 @@ const store = new MongoDBStore({
   collection: "mySession",
 });
 
-app.use(session({
-  key: "session",
-  secret: "Hello@34",
-  resave: false,
-  saveUninitialized: false,
-  store: store,
-  cookie: {
-    maxAge: 60 * 60 * 60 * 10,
-    secure:false,
-  }
-}));
-
+app.use(
+  session({
+    key: "session",
+    secret: "Hello@34",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+      maxAge: 60 * 60 * 60 * 10,
+      secure: false,
+      hostOnly: false,
+      httpOnly: false,
+    },
+  })
+);
 
 //routes defination
 

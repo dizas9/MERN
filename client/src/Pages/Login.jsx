@@ -21,7 +21,7 @@ export default function Login() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    axios.post(`${PROD_URL}/api/user/login`, JSON.stringify(formData), {
+    axios.post(`${API_URL}/api/user/login`, JSON.stringify(formData), {
       headers: { "Content-Type": "application/json" },
       withCredentials: true,
     }).then((res) => {
@@ -41,7 +41,7 @@ export default function Login() {
             display: "flex",
             flexDirection: "column",
             alignItems: "start",
-            gap: "0.6rem",
+            gap: "0.5rem",
           }}
           onSubmit={handleSubmit}
         >
