@@ -34,7 +34,7 @@ export default function Register() {
     console.log("data: ", formDataSend);
 
     axios
-      .post(`${API_URL}/api/user/register`, formDataSend)
+      .post(`${PROD_URL}/api/user/register`, formDataSend)
       .then((response) => {
         if (response.status === 200) {
           setLoading(false);

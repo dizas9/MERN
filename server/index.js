@@ -15,6 +15,7 @@ app.use(
       "https://mern-front-blush.vercel.app",
       "http://localhost:5173",
       "http://localhost:5000",
+      "http://localhost:4173",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     // allowedHeaders: ["Content-Type", "Authorization"],
@@ -48,7 +49,7 @@ app.use(
     store: store,
     cookie: {
       maxAge: 60 * 60 * 60 * 10,
-      secure: false,
+      secure: true,
       hostOnly: false,
       httpOnly: false,
     },
