@@ -3,25 +3,30 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
+const mongoose = require("mongoose");
+const Grid = require("gridfs-stream");
 const User = require("../models/User");
 
 //multer file upload middleware
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "Upload");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
+
+//create GridFS storage
+
+// const connection = mongoose.connection;
+// let gfs;
+
+// connection.once("open", () => {
+//   gfs = Grid(connection.db, mongoose.mongo);
+//   gfs.collection("users");
+// });
 
 // register routes
 router.post("/register", upload.single("image"), async (req, res) => {
   // destruture request body
   const { firstname, lastname, email, password } = req.body;
-  const image = req.file ? req.file.path : null;
+  const image = req.file ? req.file.buffer.toString("base64") : null;
   console.log(image);
 
   try {
