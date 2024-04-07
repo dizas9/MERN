@@ -6,7 +6,7 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 
 //middlewire
 const app = express();
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
   cors({
@@ -39,6 +39,8 @@ const store = new MongoDBStore({
   databaseName: "test",
   collection: "mySession",
 });
+
+app.set("trust proxy", 1);
 
 app.use(
   session({
