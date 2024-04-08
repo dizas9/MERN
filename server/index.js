@@ -40,7 +40,7 @@ const store = new MongoDBStore({
   collection: "mySession",
 });
 
-app.set("trust proxy", 1);
+
 
 app.use(
   session({
@@ -51,6 +51,7 @@ app.use(
     store: store,
     cookie: {
       maxAge: 60 * 60 * 60 * 10,
+      secure:false,
     },
   })
 );
